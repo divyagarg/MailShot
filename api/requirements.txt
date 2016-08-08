@@ -1,0 +1,11 @@
+Flask==0.10.1
+Flask-Script==2.0.5
+sqlalchemy==0.9.8
+uwsgi==2.0.8
+requests
+pyyaml
+gevent
+webargs==1.2.0
+ujson
+newrelic
+mysql-connector-python==2.0.4

@@ -1,0 +1,5 @@
+mysql:
+    connection: mysql+mysqlconnector://askme:ma8ho2n3qdy9ew@new-rds-askme.c0wj8qdslqom.ap-southeast-1.rds.amazonaws.com/cantor
+
+logfile: "/var/log/cantor/Catalog.log"
+errorlogfile: "/var/log/cantor/CatalogError.log"
