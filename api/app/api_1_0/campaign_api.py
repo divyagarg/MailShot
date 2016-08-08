@@ -4,7 +4,26 @@ from app.decorator import json
 
 logger = logging.getLogger()
 
-@api.route("/test", methods=["GET"])
+
+@api.route("/campaign", methods=["POST"])
 @json
-def get_attribute_list():
+def create_campaign():
+    return {"result": "success"}
+
+
+@api.route("/campaign", methods=["GET"])
+@json
+def get_all_campaigns():
+    return {"result": "success"}
+
+
+@api.route("/campaign/<campaignid>", methods=["GET"])
+@json
+def get_campaigns_by_id():
+    return {"result": "success"}
+
+
+@api.route("/campaign/summary/<campaignid>", methods=["GET"])
+@json
+def get_campaigns_summary_by_id():
     return {"result": "success"}
