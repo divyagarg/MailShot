@@ -4,6 +4,38 @@ CREATE DATABASE IF NOT EXISTS `MailShot`;
 
 use `MailShot`;
 
+DROP TABLE IF EXISTS `Category`;
+CREATE TABLE `Category` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+DROP TABLE IF EXISTS `Template`;
+CREATE TABLE `Template` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(128) DEFAULT NULL,
+  `UserId` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+DROP TABLE IF EXISTS `Variant`;
+CREATE TABLE `Variant` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `VariantName` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `HTML` longtext COLLATE utf8mb4_unicode_ci,
+  `TemplateId` int(11) DEFAULT NULL,
+  `Subject` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  PRIMARY KEY (`ID`),
+  KEY `VTemplateId_idx` (`TemplateId`),
+  CONSTRAINT `VTemplateId` FOREIGN KEY (`TemplateId`) REFERENCES `Template` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
 DROP TABLE IF EXISTS `Campaign`;
 CREATE TABLE `Campaign` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -20,6 +52,14 @@ CREATE TABLE `Campaign` (
   KEY `CCategoryId_idx` (`CategoryId`),
   CONSTRAINT `CCategoryId` FOREIGN KEY (`CategoryId`) REFERENCES `Category` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `CTemplateId` FOREIGN KEY (`TemplateId`) REFERENCES `Template` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+DROP TABLE IF EXISTS `Segment`;
+CREATE TABLE `Segment` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -55,12 +95,6 @@ CREATE TABLE `CampaignSummary` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `Category`;
-CREATE TABLE `Category` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(128) DEFAULT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
@@ -90,21 +124,6 @@ CREATE TABLE `ContactSegmentMap` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-
-DROP TABLE IF EXISTS `LinkTrack`;
-CREATE TABLE `LinkTrack` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `UserTrackerId` binary(64) DEFAULT NULL,
-  `Link` varchar(516) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `RedirectId` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ClickCount` int(11) DEFAULT '0',
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `RedirectId_UNIQUE` (`RedirectId`),
-  KEY `CampaignLinkMap_Id` (`UserTrackerId`),
-  CONSTRAINT `CampaignLinkMap_Id` FOREIGN KEY (`UserTrackerId`) REFERENCES `MailTrack` (`UserTrackerId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
 DROP TABLE IF EXISTS `MailTrack`;
 CREATE TABLE `MailTrack` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -128,6 +147,21 @@ CREATE TABLE `MailTrack` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+DROP TABLE IF EXISTS `LinkTrack`;
+CREATE TABLE `LinkTrack` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `UserTrackerId` binary(64) DEFAULT NULL,
+  `Link` varchar(516) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RedirectId` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ClickCount` int(11) DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `RedirectId_UNIQUE` (`RedirectId`),
+  KEY `CampaignLinkMap_Id` (`UserTrackerId`),
+  CONSTRAINT `CampaignLinkMap_Id` FOREIGN KEY (`UserTrackerId`) REFERENCES `MailTrack` (`UserTrackerId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
 DROP TABLE IF EXISTS `SampleCampaignSummary`;
 CREATE TABLE `SampleCampaignSummary` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -147,21 +181,6 @@ CREATE TABLE `SampleCampaignSummary` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `Segment`;
-CREATE TABLE `Segment` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-DROP TABLE IF EXISTS `Template`;
-CREATE TABLE `Template` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(128) DEFAULT NULL,
-  `UserId` varchar(128) DEFAULT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 
 DROP TABLE IF EXISTS `TestParameters`;
 CREATE TABLE `TestParameters` (
@@ -177,13 +196,3 @@ CREATE TABLE `TestParameters` (
 
 
 
-DROP TABLE IF EXISTS `Variant`;
-CREATE TABLE `Variant` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `VariantName` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `HTML` longtext COLLATE utf8mb4_unicode_ci,
-  `TemplateId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `VTemplateId_idx` (`TemplateId`),
-  CONSTRAINT `VTemplateId` FOREIGN KEY (`TemplateId`) REFERENCES `Template` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
