@@ -23,7 +23,8 @@ def create_campaign():
     }
 
     request_args = parser.parse(args, request)
-    campaign = Campaign(name=request_args.get('name'), send_time=request_args.get('send_time'), categoryid=request_args.get('categoryid'), templateid=request_args.get('templateid'))
+    campaign = Campaign(name=request_args.get('name'), send_time=request_args.get('send_time'),
+                        categoryid=request_args.get('categoryid'), templateid=request_args.get('templateid'))
     campaign.save_campaign()
     return campaign.to_json()
 

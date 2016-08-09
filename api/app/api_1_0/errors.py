@@ -4,7 +4,6 @@ from flask import jsonify
 from . import api
 
 
-
 @api.app_errorhandler(404)
 def page_not_found(e):
     response = jsonify({"error": "not found"})
@@ -18,11 +17,13 @@ def forbidden(message):
     response.status_code = 403
     return response
 
+
 @api.app_errorhandler(500)
 def internal_server_error(e):
     response = jsonify({"error": "internal server error"})
     response.status_code = 403
     return response
+
 
 @api.app_errorhandler(400)
 def bad_request(message):
@@ -35,6 +36,7 @@ def json_error(message):
     response = jsonify({"error": message})
     response.status_code = 403
     return response
+
 
 @api.errorhandler(MailShotException)
 def handle_invalid_usage(error):
