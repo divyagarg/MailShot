@@ -1,6 +1,3 @@
-import logging
-import segment
-
 import gevent
 from multiprocessing import JoinableQueue
 from api.config import WORKER_THREAD_COUNT

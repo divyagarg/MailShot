@@ -1,12 +1,13 @@
 import logging
 
-from flask import request
 from webargs import fields, validate
 from webargs.flaskparser import parser
-
 from app.api_1_0 import api
-from app.decorator import json
 from app.src.campaign import Campaign
+import uuid
+from app.decorator import json
+from flask import g, request
+
 
 logger = logging.getLogger()
 
@@ -27,19 +28,55 @@ def create_campaign():
     return campaign.to_json()
 
 
-@api.route("/campaign", methods=["GET"])
-@json
-def get_all_campaigns():
-    return {"result": "success"}
+campaign_query_param = {
+    "limit": fields.Int(required=True),
+    "offset": fields.Int(required=True)
+
+}
+
+# @api.route("/campaign", methods=["GET"])
+# @json
+# def get_all_campaigns():
+#     args = parser.parse(campaign_query_param, request)
+#     g.UUID = uuid.uuid4()
+#     logger.info('START_CALL= %s Request_url = %s', g.UUID, str(request.url))
+#     campaign = Campaign()
+#     try:
+#         campaigns = campaign.get_campaigns_list(args.get('limit'), args.get('offset'))
+#     except Exception as exception:
+#         logger.error('%s Exception in getting Campaigns', g.UUID, str(exception), exc_info=True)
+#         return {"result": "Failure", "message": str(exception)}
+#     else:
+#         return {"result": "success", "data": campaigns}
 
 
-@api.route("/campaign/<campaignid>", methods=["GET"])
-@json
-def get_campaigns_by_id():
-    return {"result": "success"}
+# @api.route("/campaign/<campaignid>", methods=["GET"])
+# @json
+# def get_campaigns_by_id(campaignid):
+#     if campaignid:
+#         g.UUID = uuid.uuid4()
+#         logger.info('START_CALL= %s Request_url = %s, campaignid = %s', g.UUID, str(request.url), campaignid)
+#         campaign = Campaign(campaign_id = campaignid)
+#         try:
+#             response_data = campaign.get_campain()
+#         except Exception as exception:
+#             logger.error('%s Exception in getting Campaign', g.UUID, str(exception), exc_info=True)
+#             return {"result": "Failure", "message": str(exception)}
+#         else:
+#             return {"result": "success", "data": response_data}
 
 
-@api.route("/campaign/summary/<campaignid>", methods=["GET"])
-@json
-def get_campaigns_summary_by_id():
-    return {"result": "success"}
+# @api.route("/campaign/summary/<campaignid>", methods=["GET"])
+# @json
+# def get_campaigns_summary_by_id(campaignid):
+#     if campaignid:
+#         g.UUID = uuid.uuid4()
+#         logger.info('START_CALL= %s Request_url = %s, campaignid = %s', g.UUID, str(request.url), campaignid)
+#         campaign = Campaign(campaign_id = campaignid)
+#         try:
+#             response_data = campaign.get_campaign_summary()
+#         except Exception as exception:
+#             logger.error('%s Exception in getting Campaign', g.UUID, str(exception), exc_info=True)
+#             return {"result": "Failure", "message": str(exception)}
+#         else:
+#             return {"result": "success", "data": response_data}
