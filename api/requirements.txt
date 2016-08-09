@@ -4,7 +4,6 @@ sqlalchemy==0.9.8
 uwsgi==2.0.8
 requests
 pyyaml
-gevent
 webargs==1.2.0
 ujson
 newrelic

@@ -1,5 +1,5 @@
 mysql:
-    connection: mysql+mysqlconnector://root:getit@123@localhost/MailShot
+    connection: mysql+mysqlconnector://root@localhost/MailShot
 
 logfile: "MailShot.log"
 errorlogfile: "MailShotError.log"

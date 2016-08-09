@@ -1,6 +1,5 @@
 import logging
 import logging.config
-
 from config import LOG_FILE, LOG_FILE_ERROR
 
 

@@ -1,7 +1,8 @@
+from app.errors import MailShotException
 from flask import jsonify
 
-from app.api_1_0 import api
-from app.errors import  MailShotException
+from . import api
+
 
 
 @api.app_errorhandler(404)

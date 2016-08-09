@@ -17,7 +17,8 @@ CREATE TABLE `Template` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(128) DEFAULT NULL,
   `UserId` varchar(128) DEFAULT NULL,
-  PRIMARY KEY (`Id`)
+  PRIMARY KEY (`Id`),
+  UNIQUE(`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 

@@ -1,8 +1,10 @@
-from datetime import datetime
+
 import logging
-from sqlalchemy import Table, MetaData, create_engine, exc, BINARY, VARCHAR, BOOLEAN, DATETIME, Column,BIGINT, and_, or_, not_, DATE, Enum, INTEGER
-from sqlalchemy import asc, desc, select, UniqueConstraint, Index, TEXT, exists, func
 from config import DATABASE_URL
+
+from sqlalchemy import Table, MetaData, create_engine, exc, and_, or_, not_
+from sqlalchemy import asc, desc, select,exists, func
+
 
 logger = logging.getLogger()
 
@@ -21,7 +23,7 @@ class AlchemyDB:
     def init():
         try:
             AlchemyDB.engine = create_engine(DATABASE_URL,
-                                    paramstyle='format', pool_recycle=3600, pool_size=50, max_overflow=100)
+                                    paramstyle='format', pool_recycle=3600, )
 
             meta = MetaData()
 
