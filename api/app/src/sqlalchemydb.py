@@ -278,7 +278,7 @@ class AlchemyDB:
             logger.error(err, exc_info=True)
             return False
 
-    def find(self, table_name, order_by, _limit=None, _offset=None, like=None, **where):
+    def find(self, table_name, order_by=None, _limit=None, _offset=None, like=None, **where):
         table = AlchemyDB.get_table(table_name)
         try:
             func = asc

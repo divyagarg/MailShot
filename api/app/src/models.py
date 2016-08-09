@@ -18,7 +18,7 @@ class Template(object):
 		self.id = None
 
 	def save_template(self):
-		logger.debug("Insert_Template")
+		logger.debug("%s Insert_Template", g.UUID)
 		db = AlchemyDB()
 		db.begin()
 		try:
@@ -46,7 +46,7 @@ class Variant(object):
 
 
 	def save_variant(self):
-		logger.debug("Insert_variant")
+		logger.debug("%s Insert_variant", g.UUID)
 		db = AlchemyDB()
 		db.begin()
 		try:
@@ -64,3 +64,22 @@ class Variant(object):
 			db.commit()
 			return True
 		return False
+
+class Segment(object):
+
+	def __init__(self, name=None):
+		self.name = name
+		self.id = None
+
+	def get_all_segments(self):
+		logger.debug("%s getting_Segments", g.UUID)
+		db = AlchemyDB()
+
+		try:
+			segments = db.find("Segment")
+		except Exception as exception:
+			logger.error(exception, exc_info = True)
+			db.rollback()
+			raise exception
+		else:
+			return segments
