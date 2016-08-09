@@ -23,7 +23,7 @@ def email_sender_worker(queue, mail):
     while True:
         item = queue.get()
         try:
-            #send email
+            # send email
             pass
         finally:
             queue.task_done()

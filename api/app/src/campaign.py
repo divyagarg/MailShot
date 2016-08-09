@@ -5,7 +5,7 @@ from redis import Redis
 from rq_scheduler import Scheduler
 
 from sqlalchemydb import AlchemyDB
-from api.config import REDIS_HOST, REDIS_PORT , REDIS_DB, REDIS_QUEUE
+from api.config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_QUEUE
 from smtp import async_mail_sender
 
 
@@ -14,7 +14,6 @@ scheduler = Scheduler(connection=Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDI
 
 
 class Campaign:
-
     def __init__(self, id=None, name=None, status=None, send_time=None, categoryid=None, templateid=None):
         self.id = id
         self.name = name
@@ -25,7 +24,8 @@ class Campaign:
 
     def save_campaign(self):
         db = AlchemyDB()
-        self.id = db.insert_row("Campaign", Name=self.name, CategoryId=self.categoryid, SendTime=self.send_time, TemplateId=self.templateid)
+        self.id = db.insert_row("Campaign", Name=self.name, CategoryId=self.categoryid, SendTime=self.send_time,
+                                TemplateId=self.templateid)
         logger.debug(self.id)
         self._schedule_campaign()
 

@@ -1,9 +1,8 @@
-
 import logging
 from config import DATABASE_URL
 
 from sqlalchemy import Table, MetaData, create_engine, exc, and_, or_, not_
-from sqlalchemy import asc, desc, select,exists, func
+from sqlalchemy import asc, desc, select, exists, func
 
 
 logger = logging.getLogger()
@@ -23,21 +22,26 @@ class AlchemyDB:
     def init():
         try:
             AlchemyDB.engine = create_engine(DATABASE_URL,
-                                    paramstyle='format', pool_recycle=3600, )
+                                             paramstyle='format', pool_recycle=3600, )
 
             meta = MetaData()
 
             AlchemyDB._table["Campaign"] = Table('Campaign', meta, autoload=True, autoload_with=AlchemyDB.engine)
-            AlchemyDB._table["CampaignSegmentMap"] = Table('CampaignSegmentMap', meta, autoload=True, autoload_with=AlchemyDB.engine)
-            AlchemyDB._table["CampaignSummary"] = Table('CampaignSummary', meta, autoload=True, autoload_with=AlchemyDB.engine)
+            AlchemyDB._table["CampaignSegmentMap"] = Table('CampaignSegmentMap', meta, autoload=True,
+                                                           autoload_with=AlchemyDB.engine)
+            AlchemyDB._table["CampaignSummary"] = Table('CampaignSummary', meta, autoload=True,
+                                                        autoload_with=AlchemyDB.engine)
             AlchemyDB._table["Category"] = Table('Category', meta, autoload=True, autoload_with=AlchemyDB.engine)
-            AlchemyDB._table["ContactSegmentMap"] = Table('ContactSegmentMap', meta, autoload=True, autoload_with=AlchemyDB.engine)
+            AlchemyDB._table["ContactSegmentMap"] = Table('ContactSegmentMap', meta, autoload=True,
+                                                          autoload_with=AlchemyDB.engine)
             AlchemyDB._table["LinkTrack"] = Table('LinkTrack', meta, autoload=True, autoload_with=AlchemyDB.engine)
             AlchemyDB._table["MailTrack"] = Table('MailTrack', meta, autoload=True, autoload_with=AlchemyDB.engine)
-            AlchemyDB._table["SampleCampaignSummary"] = Table('SampleCampaignSummary', meta, autoload=True, autoload_with=AlchemyDB.engine)
+            AlchemyDB._table["SampleCampaignSummary"] = Table('SampleCampaignSummary', meta, autoload=True,
+                                                              autoload_with=AlchemyDB.engine)
             AlchemyDB._table["Segment"] = Table('Segment', meta, autoload=True, autoload_with=AlchemyDB.engine)
             AlchemyDB._table["Template"] = Table('Template', meta, autoload=True, autoload_with=AlchemyDB.engine)
-            AlchemyDB._table["TestParameters"] = Table('TestParameters', meta, autoload=True, autoload_with=AlchemyDB.engine)
+            AlchemyDB._table["TestParameters"] = Table('TestParameters', meta, autoload=True,
+                                                       autoload_with=AlchemyDB.engine)
             AlchemyDB._table["Variant"] = Table('Variant', meta, autoload=True, autoload_with=AlchemyDB.engine)
             meta.create_all(AlchemyDB.engine)
         except exc.SQLAlchemyError as err:
@@ -126,7 +130,7 @@ class AlchemyDB:
         table = AlchemyDB.get_table(table_name)
         self.conn.execute(table.insert(), values)
 
-    def update_row(self,table_name,*keys, **row):
+    def update_row(self, table_name, *keys, **row):
         table = AlchemyDB.get_table(table_name)
         try:
             if not isinstance(keys, (list, tuple)):
@@ -173,7 +177,7 @@ class AlchemyDB:
             logger.error(err, exc_info=True)
             return False
 
-    def find_one(self,table_name, **where):
+    def find_one(self, table_name, **where):
         logger.debug("Conditions: " + str(where))
         table = AlchemyDB.get_table(table_name)
         sel = select([table]).where(AlchemyDB.args_to_where(table, where))
@@ -200,7 +204,8 @@ class AlchemyDB:
         table = AlchemyDB.get_table(table_name)
         try:
             if like and type(like) == list:
-                sel = select([func.count()]).select_from(table).where(and_(AlchemyDB.args_to_where(table, where), AlchemyDB.args_to_like(table, like)))
+                sel = select([func.count()]).select_from(table).where(
+                    and_(AlchemyDB.args_to_where(table, where), AlchemyDB.args_to_like(table, like)))
             else:
                 sel = select([func.count()]).select_from(table).where(AlchemyDB.args_to_where(table, where))
             logger.debug(sel)
@@ -216,7 +221,8 @@ class AlchemyDB:
         table = AlchemyDB.get_table(table_name)
         try:
             if like and type(like) == list:
-                sel = select([func.count()]).select_from(table).where(or_(AlchemyDB.args_to_where(table, where), AlchemyDB.args_to_like_or(table, like)))
+                sel = select([func.count()]).select_from(table).where(
+                    or_(AlchemyDB.args_to_where(table, where), AlchemyDB.args_to_like_or(table, like)))
             else:
                 sel = select([func.count()]).select_from(table).where(AlchemyDB.args_to_where(table, where))
             logger.debug(sel)
@@ -245,11 +251,12 @@ class AlchemyDB:
             else:
                 j = table[0].join(table[1], fclause)
             for i in range(1, len(foreign_key)):
-                fclause = AlchemyDB.args_to_join(table[i], table[i+1], foreign_key[i])
-                j = j.join(table[i+1], fclause)
+                fclause = AlchemyDB.args_to_join(table[i], table[i + 1], foreign_key[i])
+                j = j.join(table[i + 1], fclause)
 
             if like and type(like) == list and len(like) == 2:
-                sel = select([func.count()]).select_from(j).where(and_(clause, AlchemyDB.get_table(like[0].split('.')[0]).c[like[0].split('.')[1]].like(like[1])))
+                sel = select([func.count()]).select_from(j).where(
+                    and_(clause, AlchemyDB.get_table(like[0].split('.')[0]).c[like[0].split('.')[1]].like(like[1])))
             else:
                 sel = select([func.count()]).select_from(j).where(clause)
 
@@ -266,9 +273,11 @@ class AlchemyDB:
         table = AlchemyDB.get_table(table_name)
         try:
             if like and type(like) == list:
-                sel = select([func.max(table.c[column_name])]).select_from(table).where(and_(AlchemyDB.args_to_where(table, where), AlchemyDB.args_to_like(table, like)))
+                sel = select([func.max(table.c[column_name])]).select_from(table).where(
+                    and_(AlchemyDB.args_to_where(table, where), AlchemyDB.args_to_like(table, like)))
             else:
-                sel = select([func.max(table.c[column_name])]).select_from(table).where(AlchemyDB.args_to_where(table, where))
+                sel = select([func.max(table.c[column_name])]).select_from(table).where(
+                    AlchemyDB.args_to_where(table, where))
             logger.debug(sel)
             row = self.conn.execute(sel)
             tup = row.fetchall()
@@ -286,7 +295,9 @@ class AlchemyDB:
                 order_by = order_by[1:]
                 func = desc
             if like and type(like) == list:
-                sel = select([table]).where(and_(AlchemyDB.args_to_where(table, where), AlchemyDB.args_to_like(table, like))).order_by(func(order_by))
+                sel = select([table]).where(
+                    and_(AlchemyDB.args_to_where(table, where), AlchemyDB.args_to_like(table, like))).order_by(
+                    func(order_by))
             else:
                 sel = select([table]).where(AlchemyDB.args_to_where(table, where)).order_by(func(order_by))
 
@@ -313,7 +324,9 @@ class AlchemyDB:
                 order_by = order_by[1:]
                 func = desc
             if like and type(like) == list:
-                sel = select([table]).where(or_(AlchemyDB.args_to_where_or(table, where), AlchemyDB.args_to_like_or(table, like))).order_by(func(order_by))
+                sel = select([table]).where(
+                    or_(AlchemyDB.args_to_where_or(table, where), AlchemyDB.args_to_like_or(table, like))).order_by(
+                    func(order_by))
             else:
                 sel = select([table]).where(AlchemyDB.args_to_where_or(table, where)).order_by(func(order_by))
 
@@ -342,7 +355,8 @@ class AlchemyDB:
             clause.append(table1.c[k] == table2.c[v])
         return and_(*clause)
 
-    def select_join(self, table_names, foreign_key, where, order_by, _limit=None, _offset=None, like=None, joinflag='inner'):
+    def select_join(self, table_names, foreign_key, where, order_by, _limit=None, _offset=None, like=None,
+                    joinflag='inner'):
         logger.debug(table_names)
         logger.debug(foreign_key)
         logger.debug(where)
@@ -363,11 +377,12 @@ class AlchemyDB:
             else:
                 j = table[0].join(table[1], fclause)
             for i in range(1, len(foreign_key)):
-                fclause = AlchemyDB.args_to_join(table[i], table[i+1], foreign_key[i])
-                j = j.join(table[i+1], fclause)
+                fclause = AlchemyDB.args_to_join(table[i], table[i + 1], foreign_key[i])
+                j = j.join(table[i + 1], fclause)
 
             if like and type(like) == list and len(like) == 2:
-                sel = select(table, use_labels=True).select_from(j).where(and_(clause, AlchemyDB.get_table(like[0].split('.')[0]).c[like[0].split('.')[1]].like(like[1]))).order_by(func(order_by))
+                sel = select(table, use_labels=True).select_from(j).where(and_(clause, AlchemyDB.get_table(
+                    like[0].split('.')[0]).c[like[0].split('.')[1]].like(like[1]))).order_by(func(order_by))
             else:
                 sel = select(table, use_labels=True).select_from(j).where(clause).order_by(func(order_by))
 
