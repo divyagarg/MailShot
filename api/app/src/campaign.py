@@ -15,19 +15,31 @@ scheduler = Scheduler(connection=Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDI
 
 
 class Campaign:
-    def __init__(self, id=None, name=None, status=None, send_time=None, categoryid=None, templateid=None):
+
+    def __init__(self, id=None, name=None, status=None, send_time=None, categoryid=None, templateid=None, segment_list=None):
         self.id = id
         self.name = name
         self.status = status
         self.send_time = datetime.strptime(send_time, '%Y-%m-%d %H:%M:%S') if send_time else datetime.now()
         self.categoryid = categoryid
         self.templateid = templateid
+        logger.debug(segment_list)
+        self.segment_list = segment_list
 
     def save_campaign(self):
         db = AlchemyDB()
-        self.id = db.insert_row("Campaign", Name=self.name, CategoryId=self.categoryid, SendTime=self.send_time,
-                                TemplateId=self.templateid)
-        logger.debug(self.id)
+        db.begin()
+        try:
+            self.id = db.insert_row("Campaign", Name=self.name, CategoryId=self.categoryid, SendTime=self.send_time,
+                                    TemplateId=self.templateid)
+            segment_data = [{"CampaignId": self.id, "SegmentId": id} for id in self.segment_list]
+            db.insert_row_batch("CampaignSegmentMap", segment_data)
+            logger.debug(self.id)
+        except Exception as e:
+            db.rollback()
+            logger.exception(e)
+        else:
+            db.commit()
         self._schedule_campaign()
 
     def _schedule_campaign(self):

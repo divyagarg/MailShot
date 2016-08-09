@@ -19,12 +19,14 @@ def create_campaign():
         'name': fields.Str(required=True),
         'send_time': fields.Str(require=True),
         'categoryid': fields.Int(required=False),
-        'templateid': fields.Int(required=True)
+        'templateid': fields.Int(required=True),
+        'segment_list': fields.List(fields.Int(), required=True)
     }
 
     request_args = parser.parse(args, request)
+    logger.debug(request_args)
     campaign = Campaign(name=request_args.get('name'), send_time=request_args.get('send_time'),
-                        categoryid=request_args.get('categoryid'), templateid=request_args.get('templateid'))
+                        categoryid=request_args.get('categoryid'), templateid=request_args.get('templateid'), segment_list=request_args.get('segment_list'))
     campaign.save_campaign()
     return campaign.to_json()
 
