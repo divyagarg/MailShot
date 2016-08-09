@@ -6,8 +6,7 @@ from app.api_1_0 import api
 from app.src.campaign import Campaign
 
 from app.decorator import json
-from flask import request
-
+from flask import request, g
 
 logger = logging.getLogger()
 
@@ -35,20 +34,18 @@ campaign_query_param = {
 
 }
 
-# @api.route("/campaign", methods=["GET"])
-# @json
-# def get_all_campaigns():
-#     args = parser.parse(campaign_query_param, request)
-#     g.UUID = uuid.uuid4()
-#     logger.info('START_CALL= %s Request_url = %s', g.UUID, str(request.url))
-#     campaign = Campaign()
-#     try:
-#         campaigns = campaign.get_campaigns_list(args.get('limit'), args.get('offset'))
-#     except Exception as exception:
-#         logger.error('%s Exception in getting Campaigns', g.UUID, str(exception), exc_info=True)
-#         return {"result": "Failure", "message": str(exception)}
-#     else:
-#         return {"result": "success", "data": campaigns}
+@api.route("/campaign", methods=["GET"])
+@json
+def get_all_campaigns():
+    args = parser.parse(campaign_query_param, request)
+    campaign = Campaign()
+    try:
+        campaigns = campaign.get_campaigns_list(args.get('limit'), args.get('offset'))
+    except Exception as exception:
+        logger.error('%s Exception in getting Campaigns', g.UUID, str(exception), exc_info=True)
+        raise exception
+    else:
+        return campaigns
 
 
 # @api.route("/campaign/<campaignid>", methods=["GET"])

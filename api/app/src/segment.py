@@ -18,7 +18,7 @@ class Segment(object):
         db = AlchemyDB()
 
         try:
-            segments = db.find("Segment")
+            segments = db.find(table_name="Segment")
         except Exception as exception:
             logger.error(exception, exc_info=True)
             db.rollback()

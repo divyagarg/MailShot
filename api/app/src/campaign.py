@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from flask import g
 
 from redis import Redis
 from rq_scheduler import Scheduler
@@ -35,6 +36,19 @@ class Campaign:
 
     def to_json(self):
         return self.__dict__
+
+    def get_campaigns_list(self, limit, offset):
+        logger.debug("%s getting_Campains for limit %s and offset %s", g.UUID, limit, offset)
+        db = AlchemyDB()
+        try:
+            campaigns = db.find(table_name="Campaign", _limit = limit, _offset=offset)
+        except Exception as exception:
+            logger.error(exception, exc_info=True)
+            db.rollback()
+            raise exception
+        else:
+            return campaigns
+
 
 
 
