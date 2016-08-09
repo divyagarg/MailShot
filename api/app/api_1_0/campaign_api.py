@@ -1,4 +1,5 @@
 import logging
+from app.src.campaignsummary import CampaignSummary
 
 from webargs import fields, validate
 from webargs.flaskparser import parser
@@ -61,17 +62,15 @@ def get_campaigns_by_id(campaignid):
         else:
             return campaign
 
-# @api.route("/campaign/summary/<campaignid>", methods=["GET"])
-# @json
-# def get_campaigns_summary_by_id(campaignid):
-#     if campaignid:
-#         g.UUID = uuid.uuid4()
-#         logger.info('START_CALL= %s Request_url = %s, campaignid = %s', g.UUID, str(request.url), campaignid)
-#         campaign = Campaign(campaign_id = campaignid)
-#         try:
-#             response_data = campaign.get_campaign_summary()
-#         except Exception as exception:
-#             logger.error('%s Exception in getting Campaign', g.UUID, str(exception), exc_info=True)
-#             return {"result": "Failure", "message": str(exception)}
-#         else:
-#             return {"result": "success", "data": response_data}
+@api.route("/campaign/summary/<campaignid>", methods=["GET"])
+@json
+def get_campaigns_summary_by_id(campaignid):
+    if campaignid:
+        campaignSummary = CampaignSummary(campaign_id = campaignid)
+        try:
+            campaignSummaryResult = campaignSummary.get_campaign_summary()
+        except Exception as exception:
+            logger.error('%s Exception in getting Campaign', g.UUID, str(exception), exc_info=True)
+            raise exception
+        else:
+            return campaignSummaryResult
