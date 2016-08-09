@@ -4,9 +4,9 @@ from webargs import fields, validate
 from webargs.flaskparser import parser
 from app.api_1_0 import api
 from app.src.campaign import Campaign
-import uuid
+
 from app.decorator import json
-from flask import g, request
+from flask import request
 
 
 logger = logging.getLogger()

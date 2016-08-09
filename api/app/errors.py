@@ -22,6 +22,7 @@ class MailShotException(Exception):
     def to_dict(self):
         rv = dict(self.payload or ())
         rv['error'] = self.error
+        rv['status'] = False
         return rv
 
 

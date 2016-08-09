@@ -1,12 +1,12 @@
 import logging
-import uuid
 
 from app.api_1_0 import api
 from app.decorator import json
-from app.errors import MailShotException
-from app.src.models import Template, Variant
+
 from app.src.sqlalchemydb import AlchemyDB
-from flask import g, request
+from app.src.template import Template
+from app.src.variant import Variant
+from flask import request
 from webargs import fields
 from webargs.flaskparser import parser
 
@@ -34,14 +34,10 @@ variant_args = {
 @json
 def create_template():
     args = parser.parse(template_args, request)
-    g.UUID = uuid.uuid4()
-    logger.info('START_CALL= %s Request_url = %s, arguments = %s', g.UUID, str(request.url), args)
     template = Template(args.get('name'), args.get('userid'))
-    result = template.save_template()
-    if result:
-        logger.info('END_CALL=%s', g.UUID)
-        return {"result": "success"}
-    return {"result": "Failure"}
+    template_id = template.save_template()
+    return template_id
+
 
 
 @api.route("/template/<templateid>/variant", methods=["POST"])
@@ -49,24 +45,14 @@ def create_template():
 def create_template_variant(templateid):
     if templateid:
         args = parser.parse(variant_args, request)
-        g.UUID = uuid.uuid4()
-        logger.info('START_CALL= %s Request_url = %s, arguments = %s', g.UUID, str(request.url), args)
         variant = Variant(args.get('variant_name'), args.get('html'), templateid, args.get('subject'))
-        try:
-            result = variant.save_variant()
-            if result is True:
-                logger.info('END_CALL=%s', g.UUID)
-                return {"result": "success"}
-            else:
-                return {"result": "Failure"}
-        except MailShotException as mse:
-            return {"result": mse.status_code}
+        variant_id = variant.save_variant()
+        return variant_id
 
 
 @api.route('/test', methods=['GET'])
 @json
 def test():
-    logger.info("Getting call for test function with request data %s", request.data)
     result = {"success": True}
     return result
 

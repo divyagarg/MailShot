@@ -21,7 +21,7 @@ def forbidden(message):
 @api.app_errorhandler(500)
 def internal_server_error(e):
     response = jsonify({"error": "internal server error"})
-    response.status_code = 403
+    response.status_code = 500
     return response
 
 
@@ -42,6 +42,12 @@ def json_error(message):
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
+    return response
+
+@api.errorhandler(Exception)
+def handle_internal_error():
+    response = jsonify({"status": False})
+    response.status_code = 500
     return response
 
 
