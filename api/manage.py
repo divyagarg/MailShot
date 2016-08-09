@@ -1,4 +1,3 @@
-from app.log import setup_logging
 from gevent.monkey import patch_all; patch_all()
 
 import os
