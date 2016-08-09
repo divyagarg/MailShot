@@ -18,8 +18,8 @@ def get_segment():
     try:
         segments = segment.get_all_segments()
     except Exception as exception:
-       logger.error('%s Exception in getting all segments', g.UUID, str(exception), exc_info=True)
-       return {"result": "Failure", "message": str(exception)}
+        logger.error('%s Exception in getting all segments', g.UUID, str(exception), exc_info=True)
+        return {"result": "Failure", "message": str(exception)}
     else:
         logger.info('END_CALL=%s segments = %s', g.UUID, segments)
         return {"result": "success", "data": segments}

@@ -10,4 +10,5 @@ def json(f):
         rv = f(*args, **kwargs)
         rv = ujson.dumps(rv)
         return Response(rv, mimetype='application/json')
+
     return wrapped

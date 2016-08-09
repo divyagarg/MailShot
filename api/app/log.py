@@ -10,7 +10,8 @@ def setup_logging():
     handler.setLevel(logging.DEBUG)
     errorhandler = logging.handlers.WatchedFileHandler(LOG_FILE_ERROR)
     errorhandler.setLevel(logging.ERROR)
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(funcName)s-[in %(pathname)s:%(lineno)d]- %(message)s")
+    formatter = logging.Formatter(
+        "%(asctime)s - %(levelname)s - %(funcName)s-[in %(pathname)s:%(lineno)d]- %(message)s")
     handler.setFormatter(formatter)
     errorhandler.setFormatter(formatter)
     logger.addHandler(handler)

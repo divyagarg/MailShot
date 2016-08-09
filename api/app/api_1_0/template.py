@@ -12,14 +12,16 @@ from webargs.flaskparser import parser
 
 logger = logging.getLogger()
 
+
 @api.before_app_first_request
 def before_app_first_request():
     AlchemyDB.init()
 
+
 template_args = {
-                 "name": fields.Str(required=True),
-                 "userid": fields.Str(required=True)
-                 }
+    "name": fields.Str(required=True),
+    "userid": fields.Str(required=True)
+}
 
 variant_args = {
     "variant_name": fields.Str(required=True),
@@ -42,8 +44,6 @@ def create_template():
     return {"result": "Failure"}
 
 
-
-
 @api.route("/template/<templateid>/variant", methods=["POST"])
 @json
 def create_template_variant(templateid):
@@ -63,16 +63,12 @@ def create_template_variant(templateid):
             return {"result": mse.status_code}
 
 
-
-
-
-
 @api.route('/test', methods=['GET'])
 @json
 def test():
-	logger.info("Getting call for test function with request data %s", request.data)
-	result = {"success": True}
-	return result
+    logger.info("Getting call for test function with request data %s", request.data)
+    result = {"success": True}
+    return result
 
 
 
