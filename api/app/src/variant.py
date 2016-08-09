@@ -1,5 +1,6 @@
 import logging
 from app.src.sqlalchemydb import AlchemyDB
+from flask import g
 
 __author__ = 'divyagarg'
 
