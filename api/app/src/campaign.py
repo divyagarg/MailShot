@@ -49,6 +49,18 @@ class Campaign:
         else:
             return campaigns
 
+    def get_campaign(self):
+        logger.debug('%s Getting campaign for campaign id %s', g.UUID, self.id)
+        db = AlchemyDB()
+        try:
+            campaign = db.find_one(table_name="Campaign", Id=self.id)
+        except Exception as exception:
+            logger.error(exception, exc_info=True)
+            db.rollback()
+            raise exception
+        else:
+            return campaign
+
 
 
 

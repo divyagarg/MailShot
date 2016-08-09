@@ -48,21 +48,18 @@ def get_all_campaigns():
         return campaigns
 
 
-# @api.route("/campaign/<campaignid>", methods=["GET"])
-# @json
-# def get_campaigns_by_id(campaignid):
-#     if campaignid:
-#         g.UUID = uuid.uuid4()
-#         logger.info('START_CALL= %s Request_url = %s, campaignid = %s', g.UUID, str(request.url), campaignid)
-#         campaign = Campaign(campaign_id = campaignid)
-#         try:
-#             response_data = campaign.get_campain()
-#         except Exception as exception:
-#             logger.error('%s Exception in getting Campaign', g.UUID, str(exception), exc_info=True)
-#             return {"result": "Failure", "message": str(exception)}
-#         else:
-#             return {"result": "success", "data": response_data}
-
+@api.route("/campaign/<campaignid>", methods=["GET"])
+@json
+def get_campaigns_by_id(campaignid):
+    if campaignid:
+        campaign = Campaign(id = campaignid)
+        try:
+            campaign = campaign.get_campaign()
+        except Exception as exception:
+            logger.error('%s Exception in getting Campaign', g.UUID, str(exception), exc_info=True)
+            raise exception
+        else:
+            return campaign
 
 # @api.route("/campaign/summary/<campaignid>", methods=["GET"])
 # @json
