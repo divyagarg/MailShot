@@ -3,3 +3,11 @@ mysql:
 
 logfile: "/var/log/cantor/Catalog.log"
 errorlogfile: "/var/log/cantor/CatalogError.log"
+
+redis:
+    host: redis-userservice.6h3jqd.0001.apse1.cache.amazonaws.com
+    port: 6379
+    db: 7
+    queue: mailshot_scheduler
+
+email_worker_threads_count: 20

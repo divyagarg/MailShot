@@ -3,3 +3,11 @@ mysql:
 
 logfile: "MailShot.log"
 errorlogfile: "MailShotError.log"
+
+redis:
+    host: localhost
+    port: 6379
+    db: 7
+    queue: mailshot_scheduler
+
+email_worker_threads_count: 20

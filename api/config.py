@@ -14,3 +14,9 @@ with open(config_file, 'r') as f:
 DATABASE_URL = CONFIG["mysql"]["connection"]
 LOG_FILE = CONFIG["logfile"]
 LOG_FILE_ERROR = CONFIG["errorlogfile"]
+
+REDIS_HOST = CONFIG["redis"]["host"]
+REDIS_PORT = CONFIG["redis"]["port"]
+REDIS_DB = CONFIG["redis"]["db"]
+REDIS_QUEUE = CONFIG["redis"]["queue"]
+WORKER_THREAD_COUNT = CONFIG["email_worker_threads_count"]
