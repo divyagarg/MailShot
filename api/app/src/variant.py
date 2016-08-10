@@ -6,13 +6,14 @@ __author__ = 'divyagarg'
 
 logger = logging.getLogger()
 
+
 class Variant(object):
-    def __init__(self, variant_name=None, html_body=None, template_id=None, subject=None):
+    def __init__(self, id=None, variant_name=None, html_body=None, template_id=None, subject=None):
         self.variant_name = variant_name
         self.subject = subject
         self.html_body = html_body
         self.template_id = template_id
-        self.id = None
+        self.id = id
 
     def save_variant(self):
         logger.debug("%s Insert_variant", g.UUID)

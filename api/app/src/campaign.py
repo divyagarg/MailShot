@@ -49,7 +49,7 @@ class Campaign:
         logger.debug(scheduler.get_jobs())
 
     def to_json(self):
-        d = {k: v for k , v in self.__dict__.iteritems() if k!='segment_list'}
+        d = {k: v for k , v in self.__dict__.iteritems() if k != 'segment_list'}
         logger.debug(self.segment_list)
         d["segment_list"] = [s.to_json() for s in self.segment_list]
         return d
@@ -109,7 +109,6 @@ class Campaign:
     #         raise exception
 
     def find_campaign(self, **filter):
-        logger.debug('%s Getting campaign for campaign id %s', g.UUID, self.id)
         db = AlchemyDB()
         join_list = []
         try:

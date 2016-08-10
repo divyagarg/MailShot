@@ -24,3 +24,6 @@ WORKER_THREAD_COUNT = CONFIG["email_worker_threads_count"]
 AWS_ACCESS_KEY_ID = CONFIG["aws_access_key_id"]
 AWS_SECRET_ACCESS_KEY = CONFIG["aws_secret_access_key"]
 AWS_REGION = CONFIG["aws_region"]
+
+SELF_URL = CONFIG["self_url"]
+MAIL_SENDER = CONFIG["mail_sender"]

@@ -43,6 +43,7 @@ class AlchemyDB:
             AlchemyDB._table["TestParameters"] = Table('TestParameters', meta, autoload=True,
                                                        autoload_with=AlchemyDB.engine)
             AlchemyDB._table["Variant"] = Table('Variant', meta, autoload=True, autoload_with=AlchemyDB.engine)
+            AlchemyDB._table["ContactInfo"] = Table('ContactInfo', meta, autoload=True, autoload_with=AlchemyDB.engine)
             meta.create_all(AlchemyDB.engine)
         except exc.SQLAlchemyError as err:
             logger.error(err, exc_info=True)

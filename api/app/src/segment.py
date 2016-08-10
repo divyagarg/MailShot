@@ -4,8 +4,6 @@ from app.src.sqlalchemydb import AlchemyDB
 from flask import g
 
 
-__author__ = 'divyagarg'
-
 logger = logging.getLogger()
 
 
@@ -36,10 +34,15 @@ class Segment(object):
         return self.__dict__
 
     @staticmethod
-    def get_email_list(segment_list):
+    def get_contact_list(segment_list):
         db = AlchemyDB()
-        data = db.select_join(["Segment", "ContactSegmentMao", "ContactInfo"], [{"Id": "SegmentId"}, {"ContactId": "Id"}], [[{"Segment.Id": segment_list}]])
+        where = [{"Segment.Id": segment_list}]
+        where.append({})
+        data = db.select_join(["Segment", "ContactSegmentMap", "ContactInfo"], [{"Id": "SegmentId"}, {"ContactId": "ContactId"}], [where])
         email = set()
+        contactinfo = []
         for d in data:
-            email.add(d["ContactInfo.Email"])
-        return list(email)
+            if d["ContactInfo_Email"] not in email:
+                email.add(d["ContactInfo_Email"])
+                contactinfo.append({"email": d["ContactInfo_Email"], "contactid": d["ContactInfo_ContactId"]})
+        return contactinfo

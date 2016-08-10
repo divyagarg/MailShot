@@ -6,6 +6,7 @@ __author__ = 'divyagarg'
 
 logger = logging.getLogger()
 
+
 class CampaignSummary(object):
 
     def __init__(self, campaign_id=None, contact_count = None, click_count=None, unique_click_count = None, open_count = None, bounce_count = None, spam_count = None, vaiant_id = None):

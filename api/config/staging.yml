@@ -15,3 +15,5 @@ email_worker_threads_count: 20
 aws_access_key_id: AKIAI2ZNLE7EET4LHENQ
 aws_secret_access_key: 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
 aws_region: eu-west-1
+self_url: http://pyservice01.staging.askme.com:9048/campaign/v1
+mail_sender: ruchi@askme.in
