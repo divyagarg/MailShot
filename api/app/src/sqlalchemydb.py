@@ -22,7 +22,7 @@ class AlchemyDB:
     def init():
         try:
             AlchemyDB.engine = create_engine(DATABASE_URL,
-                                             paramstyle='format', pool_recycle=3600, )
+                                             paramstyle='format', pool_recycle=3600)
 
             meta = MetaData()
 

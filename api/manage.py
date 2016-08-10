@@ -1,6 +1,5 @@
-from app.log import setup_logging
 from gevent.monkey import patch_all; patch_all()
-
+from app.log import setup_logging
 import os
 from app import create_app
 from flask_script import Manager, Server
