@@ -8,10 +8,11 @@ __author__ = 'divyagarg'
 
 logger = logging.getLogger()
 
+
 class Segment(object):
-    def __init__(self, name=None):
+    def __init__(self, id= None, name=None):
         self.name = name
-        self.id = None
+        self.id = id
 
     def get_all_segments(self):
         logger.debug("%s getting_Segments", g.UUID)
@@ -21,7 +22,18 @@ class Segment(object):
             segments = db.find(table_name="Segment")
         except Exception as exception:
             logger.error(exception, exc_info=True)
-            db.rollback()
             raise exception
         else:
             return segments
+
+    def to_json(self):
+        return self.__dict__
+
+    @staticmethod
+    def get_email_list(segment_list):
+        db = AlchemyDB()
+        data = db.select_join(["Segment", "ContactSegmentMao", "ContactInfo"], [{"Id": "SegmentId"}, {"ContactId": "Id"}], [[{"Segment.Id": segment_list}]])
+        email = set()
+        for d in data:
+            email.add(d["ContactInfo.Email"])
+        return list(email)

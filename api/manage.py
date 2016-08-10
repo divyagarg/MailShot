@@ -4,6 +4,7 @@ import os
 from app import create_app
 from flask_script import Manager, Server
 from app.src.sqlalchemydb import AlchemyDB
+from app.log import setup_logging
 
 
 
@@ -19,6 +20,5 @@ manager = Manager(app)
 manager.add_command("runserver", Server(host="localhost", port=9048))
 setup_logging()
 AlchemyDB.init()
-
 if __name__ == '__main__':
     manager.run()

@@ -1,5 +1,5 @@
 mysql:
-    connection: mysql+mysqlconnector://root@localhost/MailShot
+    connection: mysql+mysqlconnector://root:getit@123@localhost/MailShot
 
 logfile: "MailShot.log"
 errorlogfile: "MailShotError.log"
@@ -11,3 +11,7 @@ redis:
     queue: mailshot_scheduler
 
 email_worker_threads_count: 20
+
+aws_access_key_id: AKIAI2ZNLE7EET4LHENQ
+aws_secret_access_key: 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
+aws_region: eu-west-1

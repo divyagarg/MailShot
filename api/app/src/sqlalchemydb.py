@@ -355,7 +355,7 @@ class AlchemyDB:
             clause.append(table1.c[k] == table2.c[v])
         return and_(*clause)
 
-    def select_join(self, table_names, foreign_key, where, order_by, _limit=None, _offset=None, like=None,
+    def select_join(self, table_names, foreign_key, where, order_by=None, _limit=None, _offset=None, like=None,
                     joinflag='inner'):
         logger.debug(table_names)
         logger.debug(foreign_key)
