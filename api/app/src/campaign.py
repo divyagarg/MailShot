@@ -55,15 +55,58 @@ class Campaign:
         return d
 
     def get_campaigns_list(self, limit, offset):
-        logger.debug("%s getting_Campains for limit %s and offset %s", g.UUID, limit, offset)
+        logger.debug("%s getting Campaigns for limit %s and offset %s", g.UUID, limit, offset)
         db = AlchemyDB()
         try:
             campaigns = db.find(table_name="Campaign", _limit=limit, _offset=offset)
+            campaign_list = list()
+            for each_campaign in campaigns:
+                campaign_data = {}
+                campaign_data['id'] = each_campaign.get('Id')
+                campaign_data['name'] = each_campaign.get('Name')
+                campaign_data['status'] = each_campaign.get('Status')
+                campaign_data['send_time'] = each_campaign.get('SendTime')
+                campaign_data['category_id'] = each_campaign.get('CategoryId')
+                campaign_data['template_id'] = each_campaign.get('TemplateId')
+                campaign_list.append(campaign_data)
         except Exception as exception:
             logger.error(exception, exc_info=True)
             raise exception
         else:
-            return campaigns
+            return campaign_list
+
+     # def get_campaigns_list(self, limit, offset):
+    #     logger.debug("%s getting Campaigns for limit %s and offset %s", g.UUID, limit, offset)
+    #     db = AlchemyDB()
+    #     try:
+    #         campaigns = db.select_join(["Campaign", "CampaignSegmentMap", "Segment"], [{"Id": "CampaignId"}, {"SegmentId": "Id"}], _limit=limit, _offset=offset, joinflag='outer')
+    #         campaigns_map = {}
+    #         for each_campaign in campaigns:
+    #             if each_campaign.get('Campaign_Id') not in campaigns_map:
+    #                 campaign_data = {}
+    #                 campaign_data['id'] = each_campaign.get('Campaign_Id')
+    #                 campaign_data['name'] = each_campaign.get('Campaign_Name')
+    #                 campaign_data['status'] = each_campaign.get('Campaign_Status')
+    #                 campaign_data['send_time'] = each_campaign.get('Campaign_SendTime')
+    #                 campaign_data['category_id'] = each_campaign.get('Campaign_CategoryId')
+    #                 campaign_data['template_id'] = each_campaign.get('Campaign_TemplateId')
+    #                 campaign_data['segment_list'] = [{
+    #                     'id': each_campaign.get('Segment_Id'),
+    #                     'name': each_campaign.get('Segment_Name')
+    #                 }]
+    #                 campaigns_map[each_campaign.get('Campaign_Id')] = campaign_data
+    #
+    #             else:
+    #                 campaign_data = campaigns_map.get(each_campaign.get('Campaign_Id'))
+    #                 campaign_data.get('segment_list').append({
+    #                     'id': each_campaign.get('Segment_Id'),
+    #                     'name': each_campaign.get('Segment_Name')
+    #                 })
+    #
+    #         return campaigns_map.values()
+    #     except Exception as exception:
+    #         logger.error(exception, exc_info=True)
+    #         raise exception
 
     def find_campaign(self, **filter):
         logger.debug('%s Getting campaign for campaign id %s', g.UUID, self.id)

@@ -355,7 +355,7 @@ class AlchemyDB:
             clause.append(table1.c[k] == table2.c[v])
         return and_(*clause)
 
-    def select_join(self, table_names, foreign_key, where, order_by=None, _limit=None, _offset=None, like=None,
+    def select_join(self, table_names, foreign_key, where=None, order_by=None, _limit=None, _offset=None, like=None,
                     joinflag='inner'):
         logger.debug(table_names)
         logger.debug(foreign_key)
@@ -367,8 +367,10 @@ class AlchemyDB:
                 order_by = order_by[1:]
                 func = desc
             fclause = AlchemyDB.args_to_join(table[0], table[1], foreign_key[0])
+            clause = None
             logger.debug(fclause)
-            clause = AlchemyDB.args_to_where_join(where)
+            if where:
+                clause = AlchemyDB.args_to_where_join(where)
             logger.debug(clause)
             # clause = and_(fclause,clause)
             logger.debug(clause)
@@ -380,12 +382,11 @@ class AlchemyDB:
                 fclause = AlchemyDB.args_to_join(table[i], table[i + 1], foreign_key[i])
                 j = j.join(table[i + 1], fclause)
 
-            if like and type(like) == list and len(like) == 2:
-                sel = select(table, use_labels=True).select_from(j).where(and_(clause, AlchemyDB.get_table(
-                    like[0].split('.')[0]).c[like[0].split('.')[1]].like(like[1]))).order_by(func(order_by))
-            else:
-                sel = select(table, use_labels=True).select_from(j).where(clause).order_by(func(order_by))
-
+            sel = select(table, use_labels=True).select_from(j)
+            if clause:
+                sel = sel.where(clause)
+            if order_by:
+                sel = sel.order_by(func(order_by))
             if _limit:
                 sel = sel.limit(_limit)
 

@@ -28,6 +28,20 @@ class CampaignSummary(object):
             db.rollback()
             raise exception
         else:
-            return campaignSummary
+            self.load_campaign_summary(campaignSummary)
+            return True
+
+    def load_campaign_summary(self, campaignSummary):
+        self.campaignId = campaignSummary[0].get("CampaignId")
+        self.contactCount = campaignSummary[0].get("ContactCount")
+        self.clickCount = campaignSummary[0].get("ClickCount")
+        self.uniqueClickCount = campaignSummary[0].get("UniqueClickCount")
+        self.openCount = campaignSummary[0].get("OpenCount")
+        self.bounceCount = campaignSummary[0].get("BounceCount")
+        self.spamCount = campaignSummary[0].get("SpamCount")
+        self.variantId = campaignSummary[0].get("VariantId")
+
+    def to_json(self):
+        return self.__dict__
 
 

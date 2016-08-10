@@ -85,9 +85,10 @@ def get_campaigns_summary_by_id(campaignid):
         campaignSummary = CampaignSummary(campaign_id=campaignid)
         try:
             campaignSummaryResult = campaignSummary.get_campaign_summary()
+            logger.debug(campaignSummary)
         except Exception as exception:
             logger.error('%s Exception in getting Campaign', g.UUID,
                          str(exception), exc_info=True)
             raise exception
-        else:
-            return campaignSummaryResult
+        if campaignSummaryResult:
+            return campaignSummary.to_json()

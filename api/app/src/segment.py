@@ -24,7 +24,13 @@ class Segment(object):
             logger.error(exception, exc_info=True)
             raise exception
         else:
-            return segments
+            segment_list = []
+            for each_segment in segments:
+                segment_map = {}
+                segment_map['id'] = each_segment.get('Id')
+                segment_map['name'] = each_segment.get('Name')
+                segment_list.append(segment_map)
+            return segment_list
 
     def to_json(self):
         return self.__dict__
