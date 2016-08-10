@@ -27,7 +27,9 @@ def track_open(usertrackerid):
                          str(exception), exc_info=True)
             raise exception
         if result:
-            return send_file('static/1.png')
+            response = send_file('static/1.png')
+            response.cache_control.no_cache = True
+            return response
 
 
 @api.route("/campaign/<redirectid>", methods=["GET"])
