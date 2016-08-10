@@ -8,6 +8,7 @@ from rq_scheduler import Scheduler
 from sqlalchemydb import AlchemyDB
 from api.config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_QUEUE
 from smtp import async_mail_sender
+from segment import Segment
 
 
 logger = logging.getLogger()
@@ -24,7 +25,8 @@ class Campaign:
         self.categoryid = categoryid
         self.templateid = templateid
         logger.debug(segment_list)
-        self.segment_list = segment_list
+        if segment_list:
+            self.segment_list = [Segment(id=s) for s in segment_list]
 
     def save_campaign(self):
         db = AlchemyDB()
@@ -32,7 +34,7 @@ class Campaign:
         try:
             self.id = db.insert_row("Campaign", Name=self.name, CategoryId=self.categoryid, SendTime=self.send_time,
                                     TemplateId=self.templateid)
-            segment_data = [{"CampaignId": self.id, "SegmentId": id} for id in self.segment_list]
+            segment_data = [{"CampaignId": self.id, "SegmentId": s.id} for s in self.segment_list]
             db.insert_row_batch("CampaignSegmentMap", segment_data)
             logger.debug(self.id)
         except Exception as e:
@@ -47,31 +49,48 @@ class Campaign:
         logger.debug(scheduler.get_jobs())
 
     def to_json(self):
-        return self.__dict__
+        d = {k: v for k , v in self.__dict__.iteritems() if k!='segment_list'}
+        logger.debug(self.segment_list)
+        d["segment_list"] = [s.to_json() for s in self.segment_list]
+        return d
 
     def get_campaigns_list(self, limit, offset):
         logger.debug("%s getting_Campains for limit %s and offset %s", g.UUID, limit, offset)
         db = AlchemyDB()
         try:
-            campaigns = db.find(table_name="Campaign", _limit = limit, _offset=offset)
+            campaigns = db.find(table_name="Campaign", _limit=limit, _offset=offset)
         except Exception as exception:
             logger.error(exception, exc_info=True)
-            db.rollback()
             raise exception
         else:
             return campaigns
 
-    def get_campaign(self):
+    def find_campaign(self, **filter):
         logger.debug('%s Getting campaign for campaign id %s', g.UUID, self.id)
         db = AlchemyDB()
+        join_list = []
         try:
-            campaign = db.find_one(table_name="Campaign", Id=self.id)
+            for column, value in filter.iteritems():
+                if value:
+                    join_list.append({"Campaign" + '.' + column : value})
+            campaign = db.select_join(["Campaign", "CampaignSegmentMap", "Segment"], [{"Id": "CampaignId"}, {"SegmentId": "Id"}], [join_list], joinflag="outer")
         except Exception as exception:
-            logger.error(exception, exc_info=True)
-            db.rollback()
+            logger.error("in exception")
+            logger.error(exception)
             raise exception
         else:
-            return campaign
+            self.load_campaign_details(campaign)
+            return True
+
+    def load_campaign_details(self, details):
+        self.name, self.status, self.send_time, self.categoryid, self.templateid = details[0]["Campaign_Name"], details[0]["Campaign_Status"], \
+                                                                                   details[0]["Campaign_SendTime"], details[0]["Campaign_CategoryId"], details[0]["Campaign_TemplateId"]
+
+        self.segment_list = []
+        for d in details:
+            self.segment_list.append(Segment(d["Segment_Id"], d["Segment_Name"]))
+
+
 
 
 

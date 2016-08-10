@@ -55,14 +55,18 @@ def get_all_campaigns():
 @json
 def get_campaigns_by_id(campaignid):
     if campaignid:
-        campaign = Campaign(id = campaignid)
+        campaign = Campaign(id=campaignid)
         try:
-            campaign = campaign.get_campaign()
+            result = campaign.find_campaign(Id=campaignid)
+            logger.debug(campaign)
         except Exception as exception:
-            logger.error('%s Exception in getting Campaign', g.UUID, str(exception), exc_info=True)
+            logger.error(g.UUID)
+            logger.exception(exception)
             raise exception
         else:
-            return campaign
+
+            if result:
+                return campaign.to_json()
 
 @api.route("/campaign/summary/<campaignid>", methods=["GET"])
 @json

@@ -20,3 +20,7 @@ REDIS_PORT = CONFIG["redis"]["port"]
 REDIS_DB = CONFIG["redis"]["db"]
 REDIS_QUEUE = CONFIG["redis"]["queue"]
 WORKER_THREAD_COUNT = CONFIG["email_worker_threads_count"]
+
+AWS_ACCESS_KEY_ID = CONFIG["aws_access_key_id"]
+AWS_SECRET_ACCESS_KEY = CONFIG["aws_secret_access_key"]
+AWS_REGION = CONFIG["aws_region"]
