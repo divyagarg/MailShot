@@ -128,7 +128,7 @@ CREATE TABLE `ContactSegmentMap` (
 DROP TABLE IF EXISTS `MailTrack`;
 CREATE TABLE `MailTrack` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `UserTrackerId` binary(64) DEFAULT NULL,
+  `UserTrackerId` binary(16) DEFAULT NULL,
   `CampaignId` int(11) DEFAULT NULL,
   `ContactId` int(11) DEFAULT NULL,
   `OpenStatus` tinyint(4) DEFAULT '0',
@@ -151,7 +151,7 @@ CREATE TABLE `MailTrack` (
 DROP TABLE IF EXISTS `LinkTrack`;
 CREATE TABLE `LinkTrack` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `UserTrackerId` binary(64) DEFAULT NULL,
+  `UserTrackerId` binary(16) DEFAULT NULL,
   `Link` varchar(516) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `RedirectId` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ClickCount` int(11) DEFAULT '0',

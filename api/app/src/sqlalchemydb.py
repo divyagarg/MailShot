@@ -161,6 +161,7 @@ class AlchemyDB:
             table = AlchemyDB.get_table(table_name)
             clauses = AlchemyDB.args_to_where(table, where)
             update = table.update(clauses, val)
+            logger.debug(update)
             self.conn.execute(update)
             return True
         except Exception as err:
