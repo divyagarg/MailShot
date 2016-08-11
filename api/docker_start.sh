@@ -1,2 +1,2 @@
 nginx
-uwsgi /src/uwsgi.ini > /var/log/glacier/uwsgiprocess.log
+uwsgi /src/uwsgi.ini > /var/log/mailshot/uwsgiprocess.log
