@@ -1,7 +1,7 @@
 import logging
 from config import DATABASE_URL
 
-from sqlalchemy import Table, MetaData, create_engine, exc, and_, or_, not_
+from sqlalchemy import Table, MetaData, create_engine, exc, and_, or_, not_, update
 from sqlalchemy import asc, desc, select, exists, func
 
 
@@ -427,3 +427,13 @@ class AlchemyDB:
         logger.debug('OR List: ' + str(or_(*or_list)))
         return or_(*or_list)
 
+    def update_counter(self, table, counter, inc_value=1, **where):
+        table = AlchemyDB.get_table(table)
+        clause = AlchemyDB.args_to_where(table, where)
+        try:
+          up = update(table).where(clause).values({table.c[counter]: table.c[counter]+inc_value})
+          row = self.conn.execute(up)
+          return True
+        except exc.SQLAlchemyError as err:
+            logger.error(err, exc_info=True)
+            return False

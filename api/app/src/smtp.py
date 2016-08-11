@@ -49,9 +49,6 @@ def async_mail_sender(campaign):
                 new_tag = soup.new_tag("a", href=unsubscribe_link)
                 new_tag.string = "Unsubscribe"
                 soup.append(new_tag)
-                open_link  = SELF_URL + "/campaign/" + user_tracker_id +"id.png"
-                new_tag = soup.new_tag("a", href=open_link)
-                soup.append(new_tag)
                 # soup.append("<img src='%s'></img>" % open_link)
                 # unsubscribe_link = SELF_URL + "/campaign/unsubscribe/" + user_tracker_id
                 # soup.append("<a href='%s' target='_blank'><span style='color:#0055b8'>Unsubscribe</span></a>"%unsubscribe_link)

@@ -2,10 +2,11 @@ import logging
 import uuid
 from app.src.contactinfo import ContactInfo
 
-from flask import send_file, g, render_template
+from flask import send_file, g, render_template, redirect
 from app.api_1_0 import api
 from app.decorator import json
 from app.src.mailtrack import MailTrack
+from app.src.user import update_click_and_get_link
 
 logger = logging.getLogger()
 
@@ -45,9 +46,10 @@ def track_open(usertrackerid):
             return response
 
 
-@api.route("/campaign/<redirectid>", methods=["GET"])
-@json
-def track_click():
-    return {"result": "success"}
+@api.route("/link/<redirectid>", methods=["GET"])
+def track_click(redirectid):
+    link = update_click_and_get_link(redirectid)
+    logger.debug(link)
+    return redirect(link, code=302)
 
 

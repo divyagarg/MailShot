@@ -18,3 +18,13 @@ def insert_click_tracking_details(user_tracker_id, link_map):
     data = [{"UserTrackerTid": tracker_id, "Link": k, "RedirectId": v} for k, v in link_map.iteritems()]
     db = AlchemyDB()
     db.insert_row_batch("LinkTrack", data)
+
+
+def update_click_and_get_link(linkid):
+    # linkid = binascii.a2b_hex(linkid)
+    db = AlchemyDB()
+    data = db.find_one("LinkTrack", RedirectId=linkid)
+    logger.debug(data)
+    db.update_counter("LinkTrack", "ClickCount", RedirectId=linkid )
+    return data["Link"]
+
