@@ -59,6 +59,7 @@ class MailTrack(object):
             usertrackerid = binascii.a2b_hex(self.user_tracker_id)
             mailtracker = db.find_one("MailTrack", UserTrackerId=usertrackerid)
             contactId = mailtracker.get('ContactId')
+            self.contactId = contactId
             val = {'SubscriptionStatus': 0}
             where = {'ContactId': contactId}
             result = db.update_row_new("ContactInfo", where=where, val=val)

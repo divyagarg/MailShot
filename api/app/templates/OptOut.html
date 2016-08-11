@@ -1,49 +1,28 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+    <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Unsubscribe Preferences</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ url_for('static', filename = 'assets/stylesheets/app.css') }}" rel="stylesheet">
-</head>
+    </head>
 
-<body>
-<div class="avatar">
-    <img src="https://www.gravatar.com/avatar/21943d3bb7bce804dc77ff6c1d7b6209?d=mm">
-</div>
-<h2 class="email">ruchi@askme.in</h2>
+    <body>
+      <div class="avatar">
+        <img src="https://www.gravatar.com/avatar/21943d3bb7bce804dc77ff6c1d7b6209?d=mm">
+      </div>
+      <h2 class="email">{{email}}</h2>
+      
+				<h1 class="opt-out">Opt Out Successful!</h1>
 
-<h1 class="opt-out">Opt Out Successful!</h1>
-<main class="display-preferences">
-    <div class="group-preferences">
-        <div class="group-headings">
-            <span class="header-left">Email Group</span>
-            <span class="header-right">Receiving</span>
+			
+      
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src= "{{ url_for('static', filename = 'assets/javascripts/app.js') }}"></script>
+  <script type="text/javascript" src="//fast.fonts.net/jsapi/0e71051d-80ba-489d-a6f6-b2adbda0057b.js"></script>
 
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="group">
-            <div class="no-container">
-                <div class="no"></div>
-            </div>
-            <div class="group-name">TestUnsubscribeGroup1</div>
-            <div class="group-description">Group 1</div>
-        </div>
-
-    </div>
-    <footer>
-        <a href="/asm/?user_id=3498473&amp;data=oXcpIKnHRv18Lgt3HWK5bNx4z1b4VwRWkA00aUUNHro01wBD84DjMWmHULjkjInl-E536lFFoLZsi_EnSSqXWTrqdUuaIAu5kxpjNJI6HJqlS9DpLfF4aVeIOznccHAIIo8JllXqRBxSRM2a9qWjmHDrnpUUlO7SL-trxuLnjUprblXIKIDQ_E7oX1MtRYmZ_M_R7lbjLGXjrnbGYZqV3Qjqtcb-ww4Pvjwf5oP-9TUEqHhVKkDoEu9zghdNn-eIEiEO_jN7rJmbMEJuKyj0eJCuKVcOOdUa9l_WFysYtUJG2x1-xHKEBwGIYrnfsnG2UXKVpQm7ZQGwDBStK2nqXScI39ccLbnfsCzzzvyPWuIWs1pZ3lMpbl2-Es4VVBpafjN4bpDp1KOM4jeyPvXGC-SXr5z5mP3-J9gnLoTZamTDzr2i-LN0TRWEmYEZmuMEgNMW7mdx3ku1C-LhG5BFRgwP_leHccGjUXllRsbHNtxi1uF93sAFY6th5h2VrAarLNB5AFMGANQjfEodmQCGfKUI1Xk_dHO5_Ra_Kj9-oAg="
-           class="button empty">View Email Preferences</a>
-    </footer>
-</main>
-
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="{{ url_for('static', filename = 'assets/javascripts/app.js') }}"></script>
-<script type="text/javascript" src="//fast.fonts.net/jsapi/0e71051d-80ba-489d-a6f6-b2adbda0057b.js"></script>
-
-</body>
+    </body>
 </html>
+
