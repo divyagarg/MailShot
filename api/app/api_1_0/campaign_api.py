@@ -33,22 +33,15 @@ def create_campaign():
     return campaign.to_json()
 
 
-campaign_query_param = {
-    "limit": fields.Int(required=True),
-    "offset": fields.Int(required=True)
-
-}
-
-campaign_query_param = {
-    "limit": fields.Int(required=True),
-    "offset": fields.Int(required=True)
-
-}
-
-
 @api.route("/campaign", methods=["GET"])
 @json
 def get_all_campaigns():
+
+    campaign_query_param = {
+    "limit": fields.Int(required=True),
+    "offset": fields.Int(required=True)
+
+    }
     args = parser.parse(campaign_query_param, request)
     campaign = Campaign()
     try:
@@ -92,3 +85,25 @@ def get_campaigns_summary_by_id(campaignid):
             raise exception
         if campaignSummaryResult:
             return campaignSummary.to_json()
+
+
+@api.route("/campaign/sendtest", methods=["POST"])
+@json
+def sendtestmail():
+    request_args = {
+                        "templateid": fields.Int(required=True),
+                        "variantid": fields.Int(required=False),
+                        "test_email": fields.Str(required=True)
+                    }
+    args = parser.parse(request_args, request)
+    campaign = Campaign()
+    try:
+        campaigns = campaign.send_test(args.get('limit'),
+                                                args.get('offset'))
+    except Exception as exception:
+        logger.error('%s Exception in getting Campaigns', g.UUID,
+                     str(exception), exc_info=True)
+        raise exception
+    else:
+        return campaigns
+
