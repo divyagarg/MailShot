@@ -1,0 +1,18 @@
+FROM phusion/baseimage
+
+# Use baseimage-docker's init system
+CMD ["/sbin/my_init"]
+RUN echo "apt-get update"
+RUN apt-get update
+RUN apt-get install -y python python-dev build-essential \
+    python-pip python-setuptools libmysqlclient-dev nginx
+ADD requirements.txt requirements.txt
+RUN echo "--building--"
+RUN pip install -r requirements.txt
+
+RUN mkdir /var/log/MailShot
+RUN mkdir /var/run/uwsgi-python
+EXPOSE 9048
+ADD . /src
+ADD mailshot_nginx.conf /etc/nginx/conf.d/
+CMD /src/docker_start.sh
