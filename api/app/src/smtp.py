@@ -54,11 +54,11 @@ def async_mail_sender(campaign):
                 # unsubscribe_link = SELF_URL + "/campaign/unsubscribe/" + user_tracker_id
                 # soup.append("<a href='%s' target='_blank'><span style='color:#0055b8'>Unsubscribe</span></a>"%unsubscribe_link)
                 print str(soup)
-                send_mail(MAIL_SENDER, template.varaint_list[0].subject, str(soup),email)
+                send_mail(MAIL_SENDER, template.varaint_list[0].subject, str(soup), email)
             finally:
                 queue.task_done()
     for i in range(0, 1):
-        gevent.spawn(email_sender_worker,campaign, template)
+        gevent.spawn(email_sender_worker, campaign, template)
     for cont in contact_list:
         queue.put((cont["email"], cont["contactid"]))
     queue.join()
@@ -66,4 +66,4 @@ def async_mail_sender(campaign):
 
 def send_mail(sender, subject, body, to):
     conn = boto.ses.connect_to_region(AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-    conn.send_email(sender, subject, body, to)
+    conn.send_email(sender, subject, body, to, format="html")

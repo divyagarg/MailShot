@@ -7,7 +7,7 @@ from rq_scheduler import Scheduler
 
 from sqlalchemydb import AlchemyDB
 from api.config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_QUEUE
-from smtp import async_mail_sender
+from api.app.src.smtp import async_mail_sender
 from segment import Segment
 
 

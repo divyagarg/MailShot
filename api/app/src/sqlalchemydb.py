@@ -384,9 +384,8 @@ class AlchemyDB:
             for i in range(1, len(foreign_key)):
                 fclause = AlchemyDB.args_to_join(table[i], table[i + 1], foreign_key[i])
                 j = j.join(table[i + 1], fclause)
-
             sel = select(table, use_labels=True).select_from(j)
-            if clause:
+            if clause is not None:
                 sel = sel.where(clause)
             if order_by:
                 sel = sel.order_by(func(order_by))

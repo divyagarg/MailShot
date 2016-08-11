@@ -15,8 +15,8 @@ new_relic_cfg = basedir + '/config/' + env + '_newrelic.ini'
 # import newrelic.agent
 # newrelic.agent.initialize(new_relic_cfg)
 
-app = create_app()
-manager = Manager(app)
+flask_app = create_app()
+manager = Manager(flask_app)
 manager.add_command("runserver", Server(host="localhost", port=9048))
 setup_logging()
 AlchemyDB.init()

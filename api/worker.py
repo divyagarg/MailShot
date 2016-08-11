@@ -2,7 +2,7 @@ import logging
 
 from redis import Redis
 from rq import Worker, Queue, Connection
-
+from app.src.sqlalchemydb import AlchemyDB
 from api.config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_QUEUE
 
 logger = logging.getLogger()
@@ -12,19 +12,23 @@ redis_conn = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
 
 
 
+LOG_FILE = "queue.log"
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler(LOG_FILE)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(funcName)s-[in %(pathname)s:%(lineno)d]- %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
-# from api.manage import app as flask_app
-from app.src.smtp import async_mail_sender
-from app.src.campaign import Campaign
-from app.src.sqlalchemydb import AlchemyDB
+# from api.manage import flask_app
 
 AlchemyDB.init()
 
-async_mail_sender(Campaign(id=18))
-
-# if __name__ == '__main__':
-#     with Connection(redis_conn):
-#         logger.debug("setting up redis")
-#         worker = Worker(map(Queue, listen))
-#         worker.work()
+if __name__ == '__main__':
+    with Connection(redis_conn):
+        logger.debug("setting up redis")
+        worker = Worker(map(Queue, listen))
+        worker.work()
