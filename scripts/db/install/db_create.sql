@@ -29,7 +29,7 @@ CREATE TABLE `Variant` (
   `VariantName` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `HTML` longtext COLLATE utf8mb4_unicode_ci,
   `TemplateId` int(11) DEFAULT NULL,
-  `Subject` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `Subject` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `VTemplateId_idx` (`TemplateId`),
   CONSTRAINT `VTemplateId` FOREIGN KEY (`TemplateId`) REFERENCES `Template` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
