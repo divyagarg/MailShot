@@ -10,7 +10,7 @@ ADD requirements.txt requirements.txt
 RUN echo "--building--"
 RUN pip install -r requirements.txt
 
-RUN mkdir /var/log/MailShot
+RUN mkdir /var/log/mailshot
 RUN mkdir /var/run/uwsgi-python
 EXPOSE 9048
 ADD . /src
