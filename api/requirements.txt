@@ -18,3 +18,4 @@ webargs==1.3.4
 Werkzeug==0.11.10
 BeautifulSoup
 https://cdn.mysql.com/Downloads/Connector-Python/mysql-connector-python-1.0.12.tar.gz
+bs4
