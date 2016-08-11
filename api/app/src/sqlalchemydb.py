@@ -32,6 +32,7 @@ class AlchemyDB:
             AlchemyDB._table["CampaignSummary"] = Table('CampaignSummary', meta, autoload=True,
                                                         autoload_with=AlchemyDB.engine)
             AlchemyDB._table["Category"] = Table('Category', meta, autoload=True, autoload_with=AlchemyDB.engine)
+            AlchemyDB._table["ContactInfo"] = Table('ContactInfo', meta, autoload=True, autoload_with=AlchemyDB.engine)
             AlchemyDB._table["ContactSegmentMap"] = Table('ContactSegmentMap', meta, autoload=True,
                                                           autoload_with=AlchemyDB.engine)
             AlchemyDB._table["LinkTrack"] = Table('LinkTrack', meta, autoload=True, autoload_with=AlchemyDB.engine)

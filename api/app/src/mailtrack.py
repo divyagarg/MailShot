@@ -49,3 +49,22 @@ class MailTrack(object):
         if result:
             db.commit()
         return result
+
+    def update_unsubscription_status(self):
+        logger.debug("%s Updating Unsubscribe status for usertracking id  %s", g.UUID, self.user_tracker_id)
+        db = AlchemyDB()
+        db.begin()
+        try:
+            usertrackerid = binascii.a2b_hex(self.user_tracker_id)
+            mailtracker = db.find_one("MailTrack", UserTrackerId = usertrackerid)
+            contactId = mailtracker.get('ContactId')
+            val = {'SubscriptionStatus': 0}
+            where = {'ContactId': contactId}
+            result = db.update_row_new("ContactInfo", where = where, val = val)
+        except Exception as exception:
+            logger.error(exception, exc_info=True)
+            db.rollback()
+            raise exception
+        if result:
+            db.commit()
+        return result
