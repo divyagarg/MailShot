@@ -8,7 +8,7 @@ logger = logging.getLogger()
 
 
 class Segment(object):
-    def __init__(self, id= None, name=None):
+    def __init__(self, id=None, name=None):
         self.name = name
         self.id = id
 
@@ -38,7 +38,8 @@ class Segment(object):
         db = AlchemyDB()
         where = []
         where.append({"Segment.Id": segment_list})
-        data = db.select_join(["Segment", "ContactSegmentMap", "ContactInfo"], [{"Id": "SegmentId"}, {"ContactId": "ContactId"}], [where])
+        data = db.select_join(["Segment", "ContactSegmentMap", "ContactInfo"],
+                              [{"Id": "SegmentId"}, {"ContactId": "ContactId"}], [where])
         email = set()
         contactinfo = []
         for d in data:

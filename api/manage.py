@@ -1,11 +1,12 @@
-from gevent.monkey import patch_all; patch_all()
+from gevent.monkey import patch_all;
+
+patch_all()
 from app.log import setup_logging
 import os
 from app import create_app
 from flask_script import Manager, Server
 from app.src.sqlalchemydb import AlchemyDB
 from app.log import setup_logging
-
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))

@@ -8,6 +8,7 @@ from app.src.mailtrack import MailTrack
 
 logger = logging.getLogger()
 
+
 @api.route("/campaign/unsubscribe/<usertrackerid>", methods=["GET"])
 def unsubscribe(usertrackerid):
     g.UUID = uuid.uuid4()

@@ -10,8 +10,6 @@ logger = logging.getLogger()
 listen = [REDIS_QUEUE]
 redis_conn = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
 
-
-
 LOG_FILE = "queue.log"
 
 logger = logging.getLogger()

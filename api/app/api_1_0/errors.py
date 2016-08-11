@@ -44,6 +44,7 @@ def handle_invalid_usage(error):
     response.status_code = error.status_code
     return response
 
+
 @api.errorhandler(Exception)
 def handle_internal_error(error):
     response = jsonify({"status": False})

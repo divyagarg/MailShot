@@ -8,8 +8,8 @@ logger = logging.getLogger()
 
 
 class CampaignSummary(object):
-
-    def __init__(self, campaign_id=None, contact_count = None, click_count=None, unique_click_count = None, open_count = None, bounce_count = None, spam_count = None, vaiant_id = None):
+    def __init__(self, campaign_id=None, contact_count=None, click_count=None, unique_click_count=None, open_count=None,
+                 bounce_count=None, spam_count=None, vaiant_id=None):
         self.campaignId = campaign_id
         self.contactCount = contact_count
         self.clickCount = click_count
@@ -23,7 +23,7 @@ class CampaignSummary(object):
         logger.debug("%s Getting Campign Summary for campign id %s", g.UUID, self.campaignId)
         db = AlchemyDB()
         try:
-            campaignSummary = db.find(table_name="CampaignSummary", CampaignId = self.campaignId)
+            campaignSummary = db.find(table_name="CampaignSummary", CampaignId=self.campaignId)
         except Exception as exception:
             logger.error(exception, exc_info=True)
             db.rollback()

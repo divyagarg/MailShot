@@ -6,7 +6,6 @@ from app.src.segment import Segment
 from flask import g
 
 
-
 logger = logging.getLogger()
 
 

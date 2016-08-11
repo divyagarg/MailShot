@@ -10,7 +10,6 @@ config_file = basedir + '/config/' + env + '.yml'
 with open(config_file, 'r') as f:
     CONFIG = yaml.safe_load(f)
 
-
 DATABASE_URL = CONFIG["mysql"]["connection"]
 LOG_FILE = CONFIG["logfile"]
 LOG_FILE_ERROR = CONFIG["errorlogfile"]

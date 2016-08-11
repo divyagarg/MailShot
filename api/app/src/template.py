@@ -36,7 +36,7 @@ class Template(object):
         db = AlchemyDB()
         join_list = []
         try:
-            join_list.append({"Template" + '.' + "Id" : self.id})
+            join_list.append({"Template" + '.' + "Id": self.id})
             template = db.select_join(["Template", "Variant"], [{"Id": "TemplateId"}], [join_list])
         except Exception as exception:
             logger.error("in exception")
@@ -51,7 +51,9 @@ class Template(object):
         self.id = details[0]["Template_Id"]
         self.varaint_list = []
         for d in details:
-            self.varaint_list.append(Variant(d["Variant_Id"], variant_name=d["Variant_VariantName"], html_body=d["Variant_HTML"], subject=d["Variant_Subject"]))
+            self.varaint_list.append(
+                Variant(d["Variant_Id"], variant_name=d["Variant_VariantName"], html_body=d["Variant_HTML"],
+                        subject=d["Variant_Subject"]))
 
     def to_json(self):
         return self.__dict__

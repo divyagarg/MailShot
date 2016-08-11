@@ -16,8 +16,8 @@ scheduler = Scheduler(connection=Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDI
 
 
 class Campaign:
-
-    def __init__(self, id=None, name=None, status=None, send_time=None, categoryid=None, templateid=None, segment_list=None):
+    def __init__(self, id=None, name=None, status=None, send_time=None, categoryid=None, templateid=None,
+                 segment_list=None):
         self.id = id
         self.name = name
         self.status = status
@@ -49,7 +49,7 @@ class Campaign:
         logger.debug(scheduler.get_jobs())
 
     def to_json(self):
-        d = {k: v for k , v in self.__dict__.iteritems() if k != 'segment_list'}
+        d = {k: v for k, v in self.__dict__.iteritems() if k != 'segment_list'}
         logger.debug(self.segment_list)
         d["segment_list"] = [s.to_json() for s in self.segment_list]
         return d
@@ -75,8 +75,9 @@ class Campaign:
         else:
             return campaign_list
 
-     # def get_campaigns_list(self, limit, offset):
-    #     logger.debug("%s getting Campaigns for limit %s and offset %s", g.UUID, limit, offset)
+            # def get_campaigns_list(self, limit, offset):
+
+    # logger.debug("%s getting Campaigns for limit %s and offset %s", g.UUID, limit, offset)
     #     db = AlchemyDB()
     #     try:
     #         campaigns = db.select_join(["Campaign", "CampaignSegmentMap", "Segment"], [{"Id": "CampaignId"}, {"SegmentId": "Id"}], _limit=limit, _offset=offset, joinflag='outer')
@@ -114,8 +115,9 @@ class Campaign:
         try:
             for column, value in filter.iteritems():
                 if value:
-                    join_list.append({"Campaign" + '.' + column : value})
-            campaign = db.select_join(["Campaign", "CampaignSegmentMap", "Segment"], [{"Id": "CampaignId"}, {"SegmentId": "Id"}], [join_list], joinflag="outer")
+                    join_list.append({"Campaign" + '.' + column: value})
+            campaign = db.select_join(["Campaign", "CampaignSegmentMap", "Segment"],
+                                      [{"Id": "CampaignId"}, {"SegmentId": "Id"}], [join_list], joinflag="outer")
         except Exception as exception:
             logger.error("in exception")
             logger.error(exception)
@@ -125,8 +127,11 @@ class Campaign:
             return True
 
     def load_campaign_details(self, details):
-        self.name, self.status, self.send_time, self.categoryid, self.templateid = details[0]["Campaign_Name"], details[0]["Campaign_Status"], \
-                                                                                   details[0]["Campaign_SendTime"], details[0]["Campaign_CategoryId"], details[0]["Campaign_TemplateId"]
+        self.name, self.status, self.send_time, self.categoryid, self.templateid = details[0]["Campaign_Name"], \
+                                                                                   details[0]["Campaign_Status"], \
+                                                                                   details[0]["Campaign_SendTime"], \
+                                                                                   details[0]["Campaign_CategoryId"], \
+                                                                                   details[0]["Campaign_TemplateId"]
 
         self.segment_list = []
         for d in details:

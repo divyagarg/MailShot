@@ -39,7 +39,6 @@ def create_template():
     return template_id
 
 
-
 @api.route("/template/<templateid>/variant", methods=["POST"])
 @json
 def create_template_variant(templateid):

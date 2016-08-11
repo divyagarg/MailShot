@@ -25,7 +25,7 @@ class Variant(object):
             self.id = db.insert_row("Variant", **args)
             logger.debug(self.id)
         # except IntegrityError as err:
-        #     logger.error('%s Template Id %s do not exist', g.UUID, self.template_id, err, exc_info=True)
+        # logger.error('%s Template Id %s do not exist', g.UUID, self.template_id, err, exc_info=True)
         #     raise MailShotException(err, ERROR_STATUS_CODE.TEMPLATE_ID_DO_NO_EXIST)
         except Exception as exception:
             logger.error(exception, exc_info=True)

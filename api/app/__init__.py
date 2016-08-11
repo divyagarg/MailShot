@@ -13,6 +13,6 @@ def create_app():
 # @json
 # def test():
 # logger.info("Getting call for test function with request data %s", request.data)
-# 	result = {"success": True}
+# result = {"success": True}
 # 	return result
 

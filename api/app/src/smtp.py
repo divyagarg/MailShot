@@ -1,4 +1,3 @@
-
 import logging
 import uuid
 
@@ -26,8 +25,8 @@ def async_mail_sender(campaign):
     queue = JoinableQueue()
     template = Template(campaign.templateid)
     template.get_template()
+
     def email_sender_worker(campaign, template):
-        print "here"
         while True:
             email, contactid = queue.get()
             try:
@@ -36,12 +35,12 @@ def async_mail_sender(campaign):
                 logger.debug(soup)
                 link_map = dict()
                 for link in soup.find_all("a"):
-                    print link
                     if not link_map.get(link['href']):
                         linkid = uuid.uuid4().hex
                         link_map[link["href"]] = linkid
-                        link["href"] = SELF_URL +"/link/"+linkid
-                user.insert_open_tracking_details(user_tracker_id=user_tracker_id, campaignid=campaign.id, contactid=contactid, variantid=template.varaint_list[0].id)
+                        link["href"] = SELF_URL + "/link/" + linkid
+                user.insert_open_tracking_details(user_tracker_id=user_tracker_id, campaignid=campaign.id,
+                                                  contactid=contactid, variantid=template.varaint_list[0].id)
                 user.insert_click_tracking_details(user_tracker_id=user_tracker_id, link_map=link_map)
                 open_link = SELF_URL + "/campaign/" + user_tracker_id + "id.png"
                 new_tag = soup.new_tag("img", href=open_link)
@@ -53,11 +52,12 @@ def async_mail_sender(campaign):
                 # soup.append("<img src='%s'></img>" % open_link)
                 # unsubscribe_link = SELF_URL + "/campaign/unsubscribe/" + user_tracker_id
                 # soup.append("<a href='%s' target='_blank'><span style='color:#0055b8'>Unsubscribe</span></a>"%unsubscribe_link)
-                print str(soup)
+                logger.debug(soup)
                 send_mail(MAIL_SENDER, template.varaint_list[0].subject, str(soup), email)
             finally:
                 queue.task_done()
-    for i in range(0, 1):
+
+    for i in range(0, WORKER_THREAD_COUNT):
         gevent.spawn(email_sender_worker, campaign, template)
     for cont in contact_list:
         queue.put((cont["email"], cont["contactid"]))
@@ -65,5 +65,6 @@ def async_mail_sender(campaign):
 
 
 def send_mail(sender, subject, body, to):
-    conn = boto.ses.connect_to_region(AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    conn = boto.ses.connect_to_region(AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID,
+                                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     conn.send_email(sender, subject, body, to, format="html")
