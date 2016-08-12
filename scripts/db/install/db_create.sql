@@ -106,8 +106,9 @@ CREATE TABLE `ContactInfo` (
   `Name` varchar(128) DEFAULT NULL,
   `Age` int(11) DEFAULT NULL,
   `Gender` enum('F','M','O') DEFAULT NULL,
-  `IsValid` tinyint(4) DEFAULT '1',
+  `IsValid` tinyint(4) DEFAULT '0',
   `SubscriptionStatus` tinyint(4) DEFAULT '1',
+  `Reason` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`ContactId`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -137,8 +138,10 @@ CREATE TABLE `MailTrack` (
   `IsSpam` tinyint(4) DEFAULT '0',
   `IsSample` tinyint(4) DEFAULT '0',
   `VariantId` int(11) DEFAULT NULL,
+  `MessageId` varchar(264) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `TrackerId_UNIQUE` (`UserTrackerId`),
+  UNIQUE KEY `MessageId_UNIQUE` (`MessageId`),
   KEY `Id_idx` (`CampaignId`),
   KEY `ContactId_idx` (`ContactId`),
   KEY `MTTemplateId_idx` (`VariantId`),

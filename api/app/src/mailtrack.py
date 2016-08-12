@@ -18,7 +18,8 @@ class MailTrack(object):
                  bounceStatus=None,
                  isSpam=False,
                  isSample=False,
-                 variantid=None
+                 variantid=None,
+                 message_id=None
     ):
         self.id = id
         self.user_tracker_id = user_tracker_id
@@ -30,7 +31,7 @@ class MailTrack(object):
         self.isSpam = isSpam
         self.isSample = isSample
         self.variantid = variantid
-
+        self.message_id = message_id
 
     def update_open_status(self):
         logger.debug("%s Updating open Email Status for usertracking id  %s", g.UUID, self.user_tracker_id)
@@ -63,6 +64,51 @@ class MailTrack(object):
             val = {'SubscriptionStatus': 0}
             where = {'ContactId': contactId}
             result = db.update_row_new("ContactInfo", where=where, val=val)
+        except Exception as exception:
+            logger.error(exception, exc_info=True)
+            db.rollback()
+            raise exception
+        if result:
+            db.commit()
+        return result
+
+    def update_bounce_status(self):
+        db = AlchemyDB()
+        db.begin()
+        try:
+            where = {'MessageId': self.message_id}
+            val = {'BounceStatus': 1}
+            result = db.update_row_new("MailTrack", where=where, val= val)
+        except Exception as exception:
+            logger.error(exception, exc_info=True)
+            db.rollback()
+            raise exception
+        if result:
+            db.commit()
+        return result
+
+    def mark_email_as_spam(self):
+        db = AlchemyDB()
+        db.begin()
+        try:
+            where = {'MessageId': self.message_id}
+            val = {'IsSpam': 1}
+            result = db.update_row_new("MailTrack", where=where, val= val)
+        except Exception as exception:
+            logger.error(exception, exc_info=True)
+            db.rollback()
+            raise exception
+        if result:
+            db.commit()
+        return result
+
+    def mark_email_as_delivered(self):
+        db = AlchemyDB()
+        db.begin()
+        try:
+            where = {'MessageId': self.message_id}
+            val = {'DeliveryStatus': 1}
+            result = db.update_row_new("MailTrack", where=where, val= val)
         except Exception as exception:
             logger.error(exception, exc_info=True)
             db.rollback()

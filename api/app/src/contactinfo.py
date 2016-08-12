@@ -8,7 +8,7 @@ __author__ = 'divyagarg'
 
 class ContactInfo(object):
 
-    def __init__(self, contactId = None, email=None, name = None, age =None, gender=None, isValid = True, subscriptionStatus = 1):
+    def __init__(self, contactId = None, email=None, name = None, age =None, gender=None, isValid = True, subscriptionStatus = 1, reason = None):
         self.contactId = contactId
         self.email = email
         self.name = name
@@ -16,6 +16,7 @@ class ContactInfo(object):
         self.gender = gender
         self.isValid = isValid
         self.subscriptionStatus = subscriptionStatus
+        self.reason = reason
 
     def getContact(self):
         logger.debug("%s Getting contact detail for given Contact id  %s", g.UUID, self.contactId)
@@ -50,3 +51,18 @@ class ContactInfo(object):
         self.gender =contactInfo.get('Gender')
         self.isValid = contactInfo.get('IsValid')
         self.subscriptionStatus = contactInfo.get('SubscriptionStatus')
+        self.reason = contactInfo.get('Reason')
+
+    def mark_contact_invalid(self, bounce_type, reason):
+        db = AlchemyDB()
+        try:
+            contactInfo = db.find_one(table_name="ContactInfo", Email = self.email)
+
+            self.contactId = contactInfo.get('ContactId')
+            where = {'ContactId': self.contactId}
+            val = {'IsValid' : 1 if bounce_type == 'Permanent' else 2, 'Reason': reason}
+            result = db.update_row_new("ContactInfo", where=where, val=val)
+        except Exception as exception:
+            logger.error(exception)
+            raise exception
+        return result
