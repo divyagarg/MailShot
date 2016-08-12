@@ -7,6 +7,7 @@ from app.api_1_0 import api
 from app.src.campaign import Campaign
 from app.decorator import json
 from flask import request, g
+from app.src.smtp import send_test_mail
 
 logger = logging.getLogger()
 
@@ -93,17 +94,15 @@ def sendtestmail():
     request_args = {
                         "templateid": fields.Int(required=True),
                         "variantid": fields.Int(required=False),
-                        "test_email": fields.Str(required=True)
+                        "email": fields.Str(required=True)
                     }
     args = parser.parse(request_args, request)
     campaign = Campaign()
     try:
-        campaigns = campaign.send_test(args.get('limit'),
-                                                args.get('offset'))
+       send_test_mail(args.get('templateid'), args.get('email'))
     except Exception as exception:
-        logger.error('%s Exception in getting Campaigns', g.UUID,
-                     str(exception), exc_info=True)
+        logger.error('%s Exception in getting Campaigns'%(exception))
         raise exception
     else:
-        return campaigns
+        return {"result": "success"}
 

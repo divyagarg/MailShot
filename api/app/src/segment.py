@@ -36,8 +36,7 @@ class Segment(object):
     @staticmethod
     def get_contact_list(segment_list):
         db = AlchemyDB()
-        where = []
-        where.append({"Segment.Id": segment_list})
+        where = [{"Segment.Id": segment_list}, {"ContactInfo.SubscriptionStatus": 1}, {"ContactInfo.IsValid": 1}]
         data = db.select_join(["Segment", "ContactSegmentMap", "ContactInfo"],
                               [{"Id": "SegmentId"}, {"ContactId": "ContactId"}], [where])
         email = set()
