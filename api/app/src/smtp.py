@@ -33,9 +33,10 @@ def async_mail_sender(campaign):
             try:
                 user_tracker_id, link_map,soup = prepare_mail(template.varaint_list[0].html_body)
                 messageid = send_mail(MAIL_SENDER, template.varaint_list[0].subject, str(soup), email)
-                user.insert_open_tracking_details(user_tracker_id=user_tracker_id, campaignid=campaign.id,
-                                                  contactid=contactid, variantid=template.varaint_list[0].id, messageid=messageid)
-                user.insert_click_tracking_details(user_tracker_id=user_tracker_id, link_map=link_map)
+                if messageid is not None:
+                    user.insert_open_tracking_details(user_tracker_id=user_tracker_id, campaignid=campaign.id,
+                                                      contactid=contactid, variantid=template.varaint_list[0].id, messageid=messageid)
+                    user.insert_click_tracking_details(user_tracker_id=user_tracker_id, link_map=link_map)
             finally:
                 queue.task_done()
 
@@ -56,8 +57,8 @@ def prepare_mail(html_body):
             linkid = uuid.uuid4().hex
             link_map[link["href"]] = linkid
             link["href"] = SELF_URL + "/link/" + linkid
-    open_link = SELF_URL + "/campaign/" + user_tracker_id + "id.png"
-    new_tag = soup.new_tag("img", href=open_link)
+    open_link = SELF_URL + "/campaign/" + user_tracker_id + "/id.png"
+    new_tag = soup.new_tag("img", src=open_link)
     soup.append(new_tag)
     unsubscribe_link = SELF_URL + "/campaign/unsubscribe/" + user_tracker_id
     new_tag = soup.new_tag("a", href=unsubscribe_link)

@@ -25,7 +25,7 @@ CREATE TABLE `Template` (
 
 DROP TABLE IF EXISTS `Variant`;
 CREATE TABLE `Variant` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `VariantName` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `HTML` longtext COLLATE utf8mb4_unicode_ci,
   `TemplateId` int(11) DEFAULT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE `ContactInfo` (
   `Name` varchar(128) DEFAULT NULL,
   `Age` int(11) DEFAULT NULL,
   `Gender` enum('F','M','O') DEFAULT NULL,
-  `IsValid` tinyint(4) DEFAULT '0',
+  `IsValid` tinyint(4) DEFAULT '1',
   `SubscriptionStatus` tinyint(4) DEFAULT '1',
   `Reason` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`ContactId`),

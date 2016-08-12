@@ -60,7 +60,7 @@ class ContactInfo(object):
 
             self.contactId = contactInfo.get('ContactId')
             where = {'ContactId': self.contactId}
-            val = {'IsValid' : 1 if bounce_type == 'Permanent' else 2, 'Reason': reason}
+            val = {'IsValid' : 2 if bounce_type == 'Permanent' else 3, 'Reason': reason}
             result = db.update_row_new("ContactInfo", where=where, val=val)
         except Exception as exception:
             logger.error(exception)

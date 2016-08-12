@@ -3,7 +3,7 @@ import logging
 from redis import Redis
 from rq import Worker, Queue, Connection
 from app.src.sqlalchemydb import AlchemyDB
-from api.config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_QUEUE
+from config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_QUEUE
 
 logger = logging.getLogger()
 

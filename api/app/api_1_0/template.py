@@ -44,7 +44,7 @@ def create_template():
 def create_template_variant(templateid):
     if templateid:
         args = parser.parse(variant_args, request)
-        variant = Variant(args.get('variant_name'), args.get('html'), templateid, args.get('subject'))
+        variant = Variant(variant_name= args.get('variant_name'), html_body = args.get('html'), template_id = templateid, subject = args.get('subject'))
         variant_id = variant.save_variant()
         return variant_id
 
