@@ -1,7 +1,8 @@
 import logging
 
 from redis import Redis
-from rq import Worker, Queue, Connection
+from rq import Connection
+from rq_scheduler import Scheduler
 from app.src.sqlalchemydb import AlchemyDB
 from config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_QUEUE
 
@@ -9,6 +10,7 @@ logger = logging.getLogger()
 
 listen = [REDIS_QUEUE]
 redis_conn = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
+
 
 
 logger = logging.getLogger()
@@ -27,5 +29,5 @@ AlchemyDB.init()
 if __name__ == '__main__':
     with Connection(redis_conn):
         logger.debug("setting up redis")
-        worker = Worker(map(Queue, listen))
-        worker.work()
+        scheduler = Scheduler()
+        scheduler.run()
