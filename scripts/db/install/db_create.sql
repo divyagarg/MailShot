@@ -101,7 +101,7 @@ CREATE TABLE `CampaignSummary` (
 
 DROP TABLE IF EXISTS `ContactInfo`;
 CREATE TABLE `ContactInfo` (
-  `ContactId` int(11) NOT NULL AUTO_INCREMENT,
+  `ContactId` int(32) NOT NULL AUTO_INCREMENT,
   `Email` varchar(128) DEFAULT NULL,
   `Name` varchar(128) DEFAULT NULL,
   `Age` int(11) DEFAULT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE `MailTrack` (
   `IsSpam` tinyint(4) DEFAULT '0',
   `IsSample` tinyint(4) DEFAULT '0',
   `VariantId` int(11) DEFAULT NULL,
-  `MessageId` varchar(264) DEFAULT NULL,
+  `MessageId` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `TrackerId_UNIQUE` (`UserTrackerId`),
   UNIQUE KEY `MessageId_UNIQUE` (`MessageId`),

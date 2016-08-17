@@ -1,0 +1,19 @@
+mysql:
+    connection: mysql+mysqlconnector://askmeapi:AskmeService2017@api-services.c0wj8qdslqom.ap-southeast-1.rds.amazonaws.com   /MailShot
+
+logfile: "/var/log/MailShot/Catalog.log"
+errorlogfile: "/var/log/MailShot/CatalogError.log"
+
+redis:
+    host: redis-userservice.6h3jqd.0001.apse1.cache.amazonaws.com
+    port: 6379
+    db: 7
+    queue: mailshot_scheduler
+
+email_worker_threads_count: 20
+
+aws_access_key_id: AKIAI2ZNLE7EET4LHENQ
+aws_secret_access_key: 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
+aws_region: eu-west-1
+self_url: http://pyservice01.staging.askme.com:9048/campaign/v1
+mail_sender: ruchi@askme.in
